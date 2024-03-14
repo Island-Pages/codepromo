@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Title = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -22,9 +23,8 @@ const CodeContainer = styled(Box)(({ theme }) => ({
 }));
 
 export default function CodeCreated() {
-  // Simulated data
-  const codeData = '123456';
-  const qrCodeUrl = `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${encodeURIComponent(codeData)}`;
+  const location = useLocation();
+  const { qrCode, codigo } = location.state;
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
@@ -37,8 +37,8 @@ export default function CodeCreated() {
           </NavLink>
           <Title>CUPOM</Title>
           <CodeContainer>
-            <img src={qrCodeUrl} alt="QR Code" />
-            <div>{codeData}</div>
+            <img src={qrCode} alt="QR Code" />
+            <div>{codigo}</div>
           </CodeContainer>
           <Stack spacing={1} direction="row" justifyContent="center">
             <Button variant="contained" color="primary" onClick={() => { /* Implementar lógica para compartilhar */ }}>

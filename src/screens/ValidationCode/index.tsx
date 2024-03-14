@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -8,6 +10,8 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { NavLink } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { postDadosCupom } from '../../services/apiService';
+
 const Title = styled('div')(({ theme }) => ({
   textAlign: 'center',
   fontSize: '24px',
@@ -33,6 +37,43 @@ const CameraArea = styled('div')(({ theme }) => ({
 }));
 
 export default function ValidarCupom() {
+  const [cupomCode, setCupomCode] = useState('');
+  const [qrCode, setQrCode] = useState('');
+  const navigate = useNavigate();
+
+  const handleValidation = async () => {
+    try {
+      let dataToSend = {};
+      
+      // Verifica se o cupomCode está preenchido
+      if (cupomCode) {
+        dataToSend = { codigo: cupomCode };
+      } else {
+        // Se não estiver preenchido, verifica se o qrCode está preenchido
+        if (qrCode) {
+          dataToSend = { qrCode: qrCode };
+        } else {
+          // Se nenhum estiver preenchido, exibe um erro
+          console.error('Nenhum código ou QR code fornecido');
+          return;
+        }
+      }
+
+      // Fazer a requisição ao backend
+      const response = await postDadosCupom(dataToSend);
+
+      // Tratar a resposta conforme necessário
+
+      const { nome, cpf, valor, formaPagamento, _id } = response;
+      // Navegar para a próxima tela, se necessário
+      navigate(`/validCode`, {
+        state: { nome: nome, cpf: cpf, valor: valor, formaPagamento: formaPagamento, id: _id}
+      });
+    } catch (error) {
+      console.error('Erro ao validar cupom:', error);
+    }
+  };
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
@@ -53,13 +94,19 @@ export default function ValidarCupom() {
           </NavLink>
           <Title>Validar Cupom</Title>
           <InputContainer>
-            <TextField label="Código do Cupom" variant="outlined" />
+            <TextField
+              label="Código do Cupom"
+              variant="outlined"
+              autoCapitalize='characters'
+              value={cupomCode}
+              onChange={(e) => setCupomCode(e.target.value)}
+            />
           </InputContainer>
           <CameraArea>
             <CameraAltIcon fontSize="large" color="primary" />
           </CameraArea>
-          <CenteredButton variant="contained" color="primary">
-            Validar
+          <CenteredButton variant="contained" color="primary" onClick={handleValidation}>
+            Verificar Cupom
           </CenteredButton>
         </Paper>
       </Stack>

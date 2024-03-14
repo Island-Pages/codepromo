@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -5,66 +6,39 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import { Typography } from '@mui/material';
+import { getCupons } from '../../services/apiService';
 
 export default function ListCoupons() {
+  const [coupons, setCoupons] = useState([]);
+
+  useEffect(() => {
+    const fetchCupons = async () => {
+      try {
+        const cuponsData = await getCupons();
+        setCoupons(cuponsData.reverse());
+      } catch (error) {
+        console.error('Erro ao buscar os cupons:', error);
+      }
+    };
+
+    fetchCupons();
+  }, []);
+
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper', maxHeight: 300, overflow: 'auto' }}>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <DoneTwoToneIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Aqui vai o nome" secondary="217.746.090-53" />
-        <Typography variant="body2" align="right">
-          R$10
-        </Typography>
-      </ListItem>
-
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <DoneTwoToneIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Gabigol" secondary="184.582.870-48" />
-        <Typography variant="body2" align="right">
-          15%
-        </Typography>
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <DoneTwoToneIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Bruno Henrique" secondary="863.540.370-35" />
-        <Typography variant="body2" align="right">
-          R$123
-        </Typography>
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <DoneTwoToneIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Nicolás de la Cruz" secondary="867.602.540-15" />
-        <Typography variant="body2" align="right">
-          R$25
-        </Typography>
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <DoneTwoToneIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Aqui vai o nome" secondary="CPF" />
-        <Typography variant="body2" align="right">
-          R$10
-        </Typography>
-      </ListItem>
+      {coupons.map(coupon => (
+        <ListItem key={coupon._id}>
+          <ListItemAvatar>
+            <Avatar>
+              <DoneTwoToneIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={coupon.nome} secondary={coupon.cpf} />
+          <Typography variant="body2" align="right">
+            {coupon.valor} {coupon.formaPagamento}
+          </Typography>
+        </ListItem>
+      ))}
     </List>
   );
 }
