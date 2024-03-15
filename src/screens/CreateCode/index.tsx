@@ -84,9 +84,9 @@ export default function CadastroCupom() {
           </NavLink>
           <Title>Cadastro de Cupom</Title>
           <InputContainer>
-            <TextField label="Nome" variant="outlined" name="nome" value={formData.nome} onChange={handleChange} />
-            <TextField label="CPF" variant="outlined" name="cpf" value={formData.cpf} onChange={handleChange} />
-            <TextField label="Valor" variant="outlined" name="valor" value={formData.valor} onChange={handleChange} />
+            <TextField label="Nome" variant="outlined" name="nome" value={formData.nome} onChange={handleChange} placeholder='Joao da Silva'/>
+            <TextField label="CPF" variant="outlined" name="cpf" value={formData.cpf} onChange={handleChange} placeholder='000.000.000-00' />
+            <TextField label="Valor" variant="outlined" name="valor" value={formData.valor} onChange={handleChange} placeholder='99,12'/>
           </InputContainer>
           <RadioGroup aria-label="forma-pagamento" defaultValue="reais" name="formaPagamento" value={formData.formaPagamento} onChange={handleChange}>
             <Stack direction="row">
