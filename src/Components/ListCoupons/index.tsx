@@ -8,8 +8,21 @@ import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import { Typography } from '@mui/material';
 import { getCupons } from '../../services/apiService';
 
+// Definindo um tipo para os dados dos cupons
+interface Cupon {
+  _id: string;
+  nome: string;
+  cpf: string;
+  valor: number;
+  formaPagamento: string;
+  qrCode: string;
+  codigo: string; 
+  validado: boolean;
+  __v: number;
+}
+
 export default function ListCoupons() {
-  const [coupons, setCoupons] = useState([]);
+  const [coupons, setCoupons] = useState<Cupon[]>([]);
 
   useEffect(() => {
     const fetchCupons = async () => {
@@ -36,6 +49,9 @@ export default function ListCoupons() {
           <ListItemText primary={coupon.nome} secondary={coupon.cpf} />
           <Typography variant="body2" align="right">
             {coupon.valor} {coupon.formaPagamento}
+          </Typography>
+          <Typography variant="body2" align="right">
+            {coupon.codigo}
           </Typography>
         </ListItem>
       ))}
