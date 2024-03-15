@@ -38,7 +38,7 @@ const CameraArea = styled('div')(({ theme }) => ({
 
 export default function ValidarCupom() {
   const [cupomCode, setCupomCode] = useState('');
-  const [qrCode, setQrCode] = useState('');
+  const qrCode = '';
   const navigate = useNavigate();
 
   const handleValidation = async () => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,11 +46,7 @@ const Button = styled.button`
 const Login = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Aqui você pode adicionar a lógica de autenticação
-
-    // Após o login bem-sucedido, redirecione para /Home
+  const handleSubmit = () => {
     navigate('/home');
   };
 
