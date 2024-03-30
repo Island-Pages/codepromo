@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Container, Typography, TextField, Button, CircularProgress } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { login } from '../services/AuthService';
 
 const Login = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState<boolean>(false);

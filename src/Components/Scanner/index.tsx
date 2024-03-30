@@ -15,7 +15,7 @@ const CenteredCameraIcon = styled(CameraAltIcon)`
     cursor: pointer;
 `;
 
-function Scanner({ onScan }) {
+function Scanner({ onScan }: { onScan: any }) {
     const [showScanner, setShowScanner] = useState(false);
 
     const startScanner = () => {
