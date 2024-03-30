@@ -5,9 +5,8 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
-import { Alert, FormControlLabel, IconButton, Radio, RadioGroup, Snackbar } from '@mui/material';
+import { Alert, FormControlLabel, IconButton, Radio, RadioGroup, Snackbar, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { TextField } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { patchValidarCupom } from '../../services/apiService';
@@ -21,23 +20,19 @@ const Title = styled('div')(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-
 const CenteredButton = styled(Button)(({}) => ({
   alignSelf: 'center',
 }));
 
-
-// Estilo para o container do Giphy
-const GiphyContainer = styled('div')(({ theme }) => ({
+const InputContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginTop: theme.spacing(2),
+  flexDirection: 'column',
+  gap: theme.spacing(2),
 }));
 
 export default function ValidCode() {
   const location = useLocation();
-  const { nome, cpf, valor, formaPagamento, id } = location.state;
+  const { nome, cpf, valor, formaPagamento, id, tempoDuracao } = location.state;
 
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
@@ -53,7 +48,7 @@ export default function ValidCode() {
 
   const handleSubmit = async () => {
     try {
-      console.log(id)
+      console.log(id);
       await patchValidarCupom(id);
       navigate('/Home');
     } catch (error) {
@@ -68,7 +63,7 @@ export default function ValidCode() {
           sx={{
             padding: 2,
             width: '400px',
-            height: '400px',
+            minHeight: '400px', 
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -80,18 +75,53 @@ export default function ValidCode() {
             </IconButton>
           </NavLink>
           <Title>Dados do Cupom</Title>
-          <GiphyContainer>
-            <ThumbUpIcon fontSize="large" color="primary" />
-          </GiphyContainer>
-          <TextField label="Nome" variant="outlined" value={nome} disabled />
-          <TextField label="CPF" variant="outlined" value={cpf} disabled />
-          <TextField label="Valor" variant="outlined" value={valor} disabled />
-          <RadioGroup aria-label="forma-pagamento" defaultValue="reais" name="formaPagamento" value={formaPagamento}>
+          <InputContainer>
+            <TextField
+              label="Nome"
+              variant="outlined"
+              name="nome"
+              value={nome}
+              disabled={true}
+            />
+            <TextField
+              label="CPF"
+              variant="outlined"
+              name="cpf"
+              value={cpf}
+              disabled={true}
+            />
+            <TextField
+              label="Valor"
+              variant="outlined"
+              name="valor"
+              value={valor}
+              disabled={true}
+            />
+            <RadioGroup
+            aria-label="forma-pagamento"
+            defaultValue="reais"
+            name="formaPagamento"
+            value={formaPagamento}
+          >
             <Stack direction="row">
               <FormControlLabel value="reais" control={<Radio />} label="Reais" />
               <FormControlLabel value="porcentagem" control={<Radio />} label="%" />
             </Stack>
           </RadioGroup>
+            <InputContainer>
+              <Typography variant="body1" color="textSecondary">
+                Selecione a data de expiração do cupom:
+              </Typography>
+              <TextField
+                variant="outlined"
+                name="tempoDuracao"
+                type="date"
+                value={tempoDuracao}
+                disabled={true}
+                sx={{ marginBottom: 1 }}
+              />
+            </InputContainer>
+          </InputContainer>
           <CenteredButton variant="contained" color="primary" onClick={handleSubmit}>
             Verificar Cupom
           </CenteredButton>

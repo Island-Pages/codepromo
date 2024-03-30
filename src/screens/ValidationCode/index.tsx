@@ -6,11 +6,11 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { NavLink } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { postDadosCupom } from '../../services/apiService';
+import Scanner from '../../Components/Scanner';
 
 const Title = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -29,16 +29,10 @@ const CenteredButton = styled(Button)(({}) => ({
   alignSelf: 'center',
 }));
 
-const CameraArea = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginTop: theme.spacing(2),
-}));
-
 export default function ValidarCupom() {
+
   const [cupomCode, setCupomCode] = useState('');
-  const qrCode = '';
+  const [qrCode, setQrCode] = useState('');
   const navigate = useNavigate();
 
   const handleValidation = async () => {
@@ -58,7 +52,6 @@ export default function ValidarCupom() {
           return;
         }
       }
-
       // Fazer a requisição ao backend
       const response = await postDadosCupom(dataToSend);
 
@@ -72,6 +65,10 @@ export default function ValidarCupom() {
     } catch (error) {
       console.error('Erro ao validar cupom:', error);
     }
+  };
+
+  const handleScanResult = (result: string) => {
+    setCupomCode(result);
   };
 
   return (
@@ -102,9 +99,7 @@ export default function ValidarCupom() {
               onChange={(e) => setCupomCode(e.target.value)}
             />
           </InputContainer>
-          <CameraArea>
-            <CameraAltIcon fontSize="large" color="primary" />
-          </CameraArea>
+          <Scanner onScan={handleScanResult}/>
           <CenteredButton variant="contained" color="primary" onClick={handleValidation}>
             Verificar Cupom
           </CenteredButton>

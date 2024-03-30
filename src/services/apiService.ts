@@ -1,6 +1,9 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
 
-const API_BASE_URL = 'https://codepromoapi-production.up.railway.app';
+dotenv.config();
+
+const API_BASE_URL = process.env.API_BASE_URL;
 
 export interface cupom {
   nome: string;
@@ -9,23 +12,6 @@ export interface cupom {
   formaPagamento: string;
 }
 
-export const postLogin = async (data: any) => {
-  try {
-    const response = await axios.post(`${API_BASE_URL}/sua-rota`, data);
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error.response.data.message || error.message);
-  }
-};
-
-export const postSignup = async (data: any) => {
-  try {
-    const response = await axios.post(`${API_BASE_URL}/sua-rota`, data);
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error.response.data.message || error.message);
-  }
-};
 
 export const getCupons = async () => {
   try {

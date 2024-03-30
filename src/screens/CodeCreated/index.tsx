@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import jsPDF from 'jspdf';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -21,15 +23,94 @@ const CodeContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(2),
 }));
-
 export default function CodeCreated() {
   const location = useLocation();
-  const { qrCode, codigo } = location.state;
+  const { qrCode, codigo, tempoDuracao, nome, cpf, valor, formaPagamento } = location.state;
+  const contentRef = useRef(null);
+
+  const valorExibicao = formaPagamento === 'reais' ? `R$ ${valor}` : `${valor} %`;
+
+  const tempoConvertido: string = tempoDuracao.split('-').reverse().join('-');
+
+  const dadosCupom = {
+    nome: `Nome do usuário: ${nome}`,
+    cpf: `CPF: ${cpf}`,
+    valor: `Valor: ${valorExibicao}`,
+    tempoDuracao: `Data de expiração: ${tempoConvertido}`,
+  };
+
+  const footer = `
+  Os termos legais quanto ao uso desse cupom, estão disponiveis no nosso site, lembramos que há qualquer obrigação juridica da Construcasa vinculada a esse cupom, cupom não configura título de crédito ou promessa de compra e venda, mas sim uma bonificação.
+  `;
+
+  const generatePdf = () => {
+    const pdf = new jsPDF();
+    pdf.setFontSize(24);
+    pdf.text('CUPOM', 105, 20, { align: 'center' });
+
+    // Adicionando QR Code
+    const qrImage = new Image();
+    qrImage.src = qrCode;
+    const qrWidth = 100; // Largura do QR code
+    const pdfWidth = pdf.internal.pageSize.getWidth(); // Largura do PDF
+    const qrX = (pdfWidth - qrWidth) / 2; // Posição horizontal para centralizar o QR code
+  
+    pdf.addImage(qrImage, 'PNG', qrX, 30, qrWidth, 100);
+  
+
+    // Adicionando Código
+    pdf.setFontSize(12);
+    pdf.text(codigo, 105, 150, { align: 'center' });
+
+    pdf.setFontSize(14);
+    pdf.text('Dados do Cupom', 105, 170, { align: 'center' });
+
+    pdf.setFontSize(11);
+    pdf.text(dadosCupom.nome, 20, 182);
+
+    pdf.setFontSize(11);
+    pdf.text(dadosCupom.cpf, 20, 192);
+
+    pdf.setFontSize(11);
+    pdf.text(dadosCupom.valor, 20, 202);
+
+    pdf.setFontSize(11);
+    pdf.text(dadosCupom.tempoDuracao, 20, 212);
+
+    pdf.setFontSize(14);
+    pdf.text('Termos e condições do Cupom', 105, 245, { align: 'center' });
+
+    // Adicionando Rodapé
+    pdf.setFontSize(11);
+    const footerLines = footer.split('\n');
+    let yPosition = 255;
+    const lineHeight = 5;
+
+    footerLines.forEach((line) => {
+      const lineSplit = pdf.splitTextToSize(line, 180);
+      lineSplit.forEach((split: string | string[]) => {
+        pdf.text(split, 20, yPosition);
+        yPosition += lineHeight;
+      });
+    });
+
+    pdf.save('cupom.pdf');
+  };
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
-        <Paper sx={{ padding: 2, width: '400px', height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <Paper
+          sx={{
+            padding: 2,
+            width: '400px',
+            height: '400px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+          ref={contentRef}
+        >
           <NavLink to="/home" style={{ color: 'inherit', textDecoration: 'none' }}>
             <IconButton color="inherit" aria-label="Voltar" sx={{ position: 'absolute', left: '4rem', top: '6rem' }}>
               <ArrowBackIcon />
@@ -41,7 +122,7 @@ export default function CodeCreated() {
             <div>{codigo}</div>
           </CodeContainer>
           <Stack spacing={1} direction="row" justifyContent="center">
-            <Button variant="contained" color="primary" onClick={() => { /* Implementar lógica para compartilhar */ }}>
+            <Button variant="contained" color="primary" onClick={generatePdf}>
               Compartilhar
             </Button>
             <Button variant="contained" color="primary" component={NavLink} to="/home">

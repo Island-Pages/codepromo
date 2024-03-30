@@ -15,6 +15,7 @@ import { postNewCupom } from '../../services/apiService';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 const Title = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -38,7 +39,8 @@ export default function CadastroCupom() {
     nome: '',
     cpf: '',
     valor: '',
-    formaPagamento: '', 
+    formaPagamento: '',
+    tempoDuracao: '', 
   });
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
@@ -65,7 +67,15 @@ export default function CadastroCupom() {
       setOpenSuccess(true);
       const { qrCode, codigo } = response;
       navigate(`/createdCode`, {
-        state: { qrCode: qrCode, codigo: codigo }
+        state: {
+          qrCode: qrCode,
+          codigo: codigo,
+          tempoDuracao: formData.tempoDuracao,
+          nome: formData.nome,
+          cpf: formData.cpf,
+          valor: formData.valor,
+          formaPagamento: formData.formaPagamento,
+        },
       });
     } catch (error) {
       console.error('Erro ao cadastrar:', error);
@@ -76,7 +86,16 @@ export default function CadastroCupom() {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
-        <Paper sx={{ padding: 2, width: '400px', height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <Paper
+          sx={{
+            padding: 2,
+            width: '400px',
+            minHeight: '400px', 
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
           <NavLink to="/home" style={{ color: 'inherit', textDecoration: 'none' }}>
             <IconButton color="inherit" aria-label="Voltar" sx={{ position: 'absolute', left: '4rem', top: '6rem' }}>
               <ArrowBackIcon />
@@ -84,17 +103,59 @@ export default function CadastroCupom() {
           </NavLink>
           <Title>Cadastro de Cupom</Title>
           <InputContainer>
-            <TextField label="Nome" variant="outlined" name="nome" value={formData.nome} onChange={handleChange} placeholder='Joao da Silva'/>
-            <TextField label="CPF" variant="outlined" name="cpf" value={formData.cpf} onChange={handleChange} placeholder='000.000.000-00' />
-            <TextField label="Valor" variant="outlined" name="valor" value={formData.valor} onChange={handleChange} placeholder='99,12'/>
-          </InputContainer>
-          <RadioGroup aria-label="forma-pagamento" defaultValue="reais" name="formaPagamento" value={formData.formaPagamento} onChange={handleChange}>
+            <TextField
+              label="Nome"
+              variant="outlined"
+              name="nome"
+              value={formData.nome}
+              onChange={handleChange}
+              placeholder="Joao da Silva"
+            />
+            <TextField
+              label="CPF"
+              variant="outlined"
+              name="cpf"
+              value={formData.cpf}
+              onChange={handleChange}
+              placeholder="000.000.000-00"
+            />
+            <TextField
+              label="Valor"
+              variant="outlined"
+              name="valor"
+              value={formData.valor}
+              onChange={handleChange}
+              placeholder="99,12"
+            />
+            <RadioGroup
+            aria-label="forma-pagamento"
+            defaultValue="reais"
+            name="formaPagamento"
+            value={formData.formaPagamento}
+            onChange={handleChange}
+          >
             <Stack direction="row">
               <FormControlLabel value="reais" control={<Radio />} label="Reais" />
               <FormControlLabel value="porcentagem" control={<Radio />} label="%" />
             </Stack>
           </RadioGroup>
-          <CenteredButton variant="contained" color="primary" onClick={handleSubmit}>Cadastrar</CenteredButton>
+            <InputContainer>
+              <Typography variant="body1" color="textSecondary">
+                Selecione a data de expiração do cupom:
+              </Typography>
+              <TextField
+                variant="outlined"
+                name="tempoDuracao"
+                type="date"
+                value={formData.tempoDuracao}
+                onChange={handleChange}
+                sx={{ marginBottom: 1 }}
+              />
+            </InputContainer>
+          </InputContainer>
+          <CenteredButton variant="contained" color="primary" onClick={handleSubmit}>
+            Cadastrar
+          </CenteredButton>
         </Paper>
       </Stack>
       <Snackbar open={openSuccess} autoHideDuration={2500} onClose={handleSuccessClose}>
