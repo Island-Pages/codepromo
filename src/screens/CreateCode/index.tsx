@@ -22,6 +22,7 @@ const Title = styled('div')(({ theme }) => ({
   fontSize: '24px',
   fontWeight: 'bold',
   marginBottom: theme.spacing(2),
+  fontFamily: 'Arial',
 }));
 
 const InputContainer = styled(Box)(({ theme }) => ({
