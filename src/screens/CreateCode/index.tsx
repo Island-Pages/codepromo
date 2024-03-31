@@ -11,11 +11,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { NavLink } from 'react-router-dom';
-import { postNewCupom } from '../../services/apiService';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { postNewCupom } from '../../services/apiService';
 
 const Title = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -32,6 +32,7 @@ const InputContainer = styled(Box)(({ theme }) => ({
 
 const CenteredButton = styled(Button)(() => ({
   alignSelf: 'center',
+  marginTop: '1rem'
 }));
 
 export default function CadastroCupom() {
@@ -40,21 +41,31 @@ export default function CadastroCupom() {
     cpf: '',
     valor: '',
     formaPagamento: '',
-    tempoDuracao: '', 
+    tempoDuracao: '',
   });
-  const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (event: any) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
+    const { name, value } = event.target;
 
-  const handleSuccessClose = () => {
-    setOpenSuccess(false);
+    // Formatação do CPF
+    if (name === 'cpf') {
+      const formattedValue = value
+        .replace(/\D/g, '') // Remove caracteres não numéricos
+        .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona o ponto após os primeiros 3 dígitos
+        .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona o segundo ponto após os próximos 3 dígitos
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona o hífen e os dois últimos dígitos
+      setFormData({
+        ...formData,
+        [name]: formattedValue,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleErrorClose = () => {
@@ -64,7 +75,6 @@ export default function CadastroCupom() {
   const handleSubmit = async () => {
     try {
       const response = await postNewCupom(formData);
-      setOpenSuccess(true);
       const { qrCode, codigo } = response;
       navigate(`/createdCode`, {
         state: {
@@ -84,16 +94,17 @@ export default function CadastroCupom() {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh'}}>
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
         <Paper
           sx={{
-            padding: 2,
-            width: '400px',
-            minHeight: '400px', 
+            padding: 5,
+            maxWidth: '90%', // Definindo a largura máxima como 90% da largura do container pai
+            minHeight: '4rem',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
           }}
         >
           <NavLink to="/home" style={{ color: 'inherit', textDecoration: 'none' }}>
@@ -104,7 +115,7 @@ export default function CadastroCupom() {
           <Title>Cadastro de Cupom</Title>
           <InputContainer>
             <TextField
-              label="Nome"
+              label="Nome *"
               variant="outlined"
               name="nome"
               value={formData.nome}
@@ -112,15 +123,16 @@ export default function CadastroCupom() {
               placeholder="Joao da Silva"
             />
             <TextField
-              label="CPF"
+              label="CPF *"
               variant="outlined"
               name="cpf"
               value={formData.cpf}
               onChange={handleChange}
               placeholder="000.000.000-00"
+              inputProps={{ maxLength: 14 }}
             />
             <TextField
-              label="Valor"
+              label="Valor *"
               variant="outlined"
               name="valor"
               value={formData.valor}
@@ -128,17 +140,17 @@ export default function CadastroCupom() {
               placeholder="99,12"
             />
             <RadioGroup
-            aria-label="forma-pagamento"
-            defaultValue="reais"
-            name="formaPagamento"
-            value={formData.formaPagamento}
-            onChange={handleChange}
-          >
-            <Stack direction="row">
-              <FormControlLabel value="reais" control={<Radio />} label="Reais" />
-              <FormControlLabel value="porcentagem" control={<Radio />} label="%" />
-            </Stack>
-          </RadioGroup>
+              aria-label="forma-pagamento"
+              defaultValue="reais"
+              name="formaPagamento"
+              value={formData.formaPagamento}
+              onChange={handleChange}
+            >
+              <Stack direction="row">
+                <FormControlLabel value="reais" control={<Radio />} label="Reais" />
+                <FormControlLabel value="porcentagem" control={<Radio />} label="%" />
+              </Stack>
+            </RadioGroup>
             <InputContainer>
               <Typography variant="body1" color="textSecondary">
                 Selecione a data de expiração do cupom:
@@ -158,11 +170,6 @@ export default function CadastroCupom() {
           </CenteredButton>
         </Paper>
       </Stack>
-      <Snackbar open={openSuccess} autoHideDuration={2500} onClose={handleSuccessClose}>
-        <Alert onClose={handleSuccessClose} severity="success" sx={{ width: '100%' }}>
-          Cupom cadastrado com sucesso!
-        </Alert>
-      </Snackbar>
       <Snackbar open={openError} autoHideDuration={2500} onClose={handleErrorClose}>
         <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
           Erro ao cadastrar o cupom. Por favor, tente novamente.

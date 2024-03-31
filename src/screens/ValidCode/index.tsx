@@ -22,6 +22,7 @@ const Title = styled('div')(({ theme }) => ({
 
 const CenteredButton = styled(Button)(({}) => ({
   alignSelf: 'center',
+  marginTop: '1rem'
 }));
 
 const InputContainer = styled(Box)(({ theme }) => ({
@@ -61,12 +62,13 @@ export default function ValidCode() {
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
         <Paper
           sx={{
-            padding: 2,
-            width: '400px',
-            minHeight: '400px', 
+            padding: 5,
+            maxWidth: '90%', // Definindo a largura máxima como 90% da largura do container pai
+            minHeight: '4rem',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
           }}
         >
           <NavLink to="/home" style={{ color: 'inherit', textDecoration: 'none' }}>

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import jsPDF from 'jspdf';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { NavLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { Alert, Snackbar } from '@mui/material';
 
 const Title = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -16,6 +17,8 @@ const Title = styled('div')(({ theme }) => ({
   fontWeight: 'bold',
   marginBottom: theme.spacing(2),
 }));
+
+
 
 const CodeContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -26,11 +29,16 @@ const CodeContainer = styled(Box)(({ theme }) => ({
 export default function CodeCreated() {
   const location = useLocation();
   const { qrCode, codigo, tempoDuracao, nome, cpf, valor, formaPagamento } = location.state;
+  const [openSnack, setOpenSnack] = useState(true)
   const contentRef = useRef(null);
 
   const valorExibicao = formaPagamento === 'reais' ? `R$ ${valor}` : `${valor} %`;
 
   const tempoConvertido: string = tempoDuracao.split('-').reverse().join('-');
+  
+  const handleSuccessClose = () => {
+    setOpenSnack(false);
+  };
 
   const dadosCupom = {
     nome: `Nome do usuário: ${nome}`,
@@ -102,12 +110,13 @@ export default function CodeCreated() {
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
         <Paper
           sx={{
-            padding: 2,
-            width: '400px',
-            height: '400px',
+            padding: 5,
+            maxWidth: '90%',
+            minHeight: '5rem',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
           }}
           ref={contentRef}
         >
@@ -121,7 +130,7 @@ export default function CodeCreated() {
             <img src={qrCode} alt="QR Code" />
             <div>{codigo}</div>
           </CodeContainer>
-          <Stack spacing={1} direction="row" justifyContent="center">
+          <Stack spacing={4}  style={{marginTop:'2rem'}}direction="row" justifyContent="center">
             <Button variant="contained" color="primary" onClick={generatePdf}>
               Compartilhar
             </Button>
@@ -131,6 +140,12 @@ export default function CodeCreated() {
           </Stack>
         </Paper>
       </Stack>
+      <Snackbar open={openSnack} autoHideDuration={2500} onClose={handleSuccessClose}>
+        <Alert onClose={handleSuccessClose} severity="success" sx={{ width: '100%' }}>
+          Cupom cadastrado com sucesso!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
+

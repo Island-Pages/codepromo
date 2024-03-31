@@ -76,12 +76,14 @@ export default function ValidarCupom() {
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
         <Paper
           sx={{
-            padding: 2,
-            width: '400px',
+            padding: 5,
+            maxWidth: '90%',
             height: '400px',
+            width: '300px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
           }}
         >
           <NavLink to="/home" style={{ color: 'inherit', textDecoration: 'none' }}>
