@@ -36,6 +36,8 @@ export default function ValidCode() {
   const location = useLocation();
   const { nome, cpf, valor, formaPagamento, id, tempoDuracao } = location.state;
 
+  const dataFormatada = new Date(tempoDuracao).toISOString().split('T')[0];
+
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
   const navigate = useNavigate();
@@ -118,7 +120,7 @@ export default function ValidCode() {
                 variant="outlined"
                 name="tempoDuracao"
                 type="date"
-                value={tempoDuracao}
+                value={dataFormatada}
                 disabled={true}
                 sx={{ marginBottom: 1 }}
               />

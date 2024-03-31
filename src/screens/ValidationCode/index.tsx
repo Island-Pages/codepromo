@@ -61,9 +61,9 @@ export default function ValidarCupom() {
       }
       const response = await postDadosCupom(dataToSend);
 
-      const { nome, cpf, valor, formaPagamento, _id } = response;
+      const { nome, cpf, valor, formaPagamento, _id, tempoDuracao } = response;
       navigate(`/validCode`, {
-        state: { nome: nome, cpf: cpf, valor: valor, formaPagamento: formaPagamento, id: _id}
+        state: { nome: nome, cpf: cpf, valor: valor, formaPagamento: formaPagamento, id: _id, tempoDuracao: tempoDuracao}
       });
     } catch (error) {
       setOpenError(true);
