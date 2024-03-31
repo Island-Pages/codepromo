@@ -89,7 +89,7 @@ export default function SignIn() {
                 label="Senha"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
-                type={showPassword ? 'text' : 'senha'}
+                type={showPassword ? 'text' : 'password'}
                 id="senha"
                 autoComplete="current-password"
                 InputProps={{
