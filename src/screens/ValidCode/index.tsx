@@ -49,7 +49,6 @@ export default function ValidCode() {
 
   const handleSubmit = async () => {
     try {
-      console.log(id);
       await patchValidarCupom(id);
       navigate('/Home');
     } catch (error) {

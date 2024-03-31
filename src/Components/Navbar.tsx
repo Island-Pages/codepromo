@@ -1,14 +1,14 @@
-import { AppBar, Box, Toolbar, Typography, Button, IconButton } from '@mui/material';
+import { AppBar, Box, Toolbar, Button, Avatar } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { logout } from '../services/AuthService';
+import logo from '../assets/logo_semfundo.png'; // Imagem com fundo
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 export default function NavBar() {
   const location = useLocation();
 
-  // Verifica se a rota atual é a rota de erro 404
   const isNotFoundRoute = location.pathname === '/notfound';
 
-  // Não renderiza o NavBar se a rota atual for a rota de erro 404
   if (isNotFoundRoute) {
     return null;
   }
@@ -20,20 +20,15 @@ export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            PROMO QR
-          </Typography>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Link to="/home">
+            <Avatar style={{ width: '5rem', height: '5rem' }}> 
+              <img src={logo} alt="Lock" style={{ width: '100%', height: '100%', backgroundColor: '#1976D2' }} />
+            </Avatar>
+          </Link>
           <Button color="inherit" component={Link} to="/" onClick={handleLogout}>
             Sair
+            <ExitToAppIcon sx={{ ml: 1 }} /> 
           </Button>
         </Toolbar>
       </AppBar>

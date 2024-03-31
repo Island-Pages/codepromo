@@ -25,7 +25,7 @@ export default function SignIn() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const response = await login(email, senha);
+      const response = await login(email.toLowerCase(), senha);
       if (response) {
         window.location.reload();
       }

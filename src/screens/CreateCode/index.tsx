@@ -99,7 +99,7 @@ export default function CadastroCupom() {
         <Paper
           sx={{
             padding: 5,
-            maxWidth: '90%', // Definindo a largura máxima como 90% da largura do container pai
+            maxWidth: '90%', 
             minHeight: '4rem',
             display: 'flex',
             flexDirection: 'column',

@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
-import { IconButton } from '@mui/material';
+import { Alert, IconButton, Snackbar } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { postDadosCupom } from '../../services/apiService';
 import Scanner from '../../Components/Scanner';
@@ -30,11 +30,17 @@ const CenteredButton = styled(Button)(({}) => ({
 }));
 
 export default function ValidarCupom() {
-
+  const [openError, setOpenError] = useState(false);
   const [cupomCode, setCupomCode] = useState('');
   const qrCode = '';
   const navigate = useNavigate();
 
+
+  const handleErrorClose = () => {
+    setOpenError(false);
+  };
+
+  
   const handleValidation = async () => {
     try {
       let dataToSend = {};
@@ -52,18 +58,14 @@ export default function ValidarCupom() {
           return;
         }
       }
-      // Fazer a requisição ao backend
       const response = await postDadosCupom(dataToSend);
 
-      // Tratar a resposta conforme necessário
-
       const { nome, cpf, valor, formaPagamento, _id } = response;
-      // Navegar para a próxima tela, se necessário
       navigate(`/validCode`, {
         state: { nome: nome, cpf: cpf, valor: valor, formaPagamento: formaPagamento, id: _id}
       });
     } catch (error) {
-      console.error('Erro ao validar cupom:', error);
+      setOpenError(true);
     }
   };
 
@@ -107,6 +109,11 @@ export default function ValidarCupom() {
           </CenteredButton>
         </Paper>
       </Stack>
+      <Snackbar open={openError} autoHideDuration={2500} onClose={handleErrorClose}>
+        <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
+          Erro ao validar o cupom. Por favor, verifique se este código é válido.
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
