@@ -33,7 +33,8 @@ export default function CodeCreated() {
   const [openSnack, setOpenSnack] = useState(true)
   const contentRef = useRef(null);
 
-  const valorExibicao = formaPagamento === 'reais' ? `R$ ${valor}` : `${valor} %`;
+  const valorExibicao = formaPagamento === 'reais' ? `R$ ${valor}` : formaPagamento === '%' ? `${valor} %` : valor;
+
 
   const tempoConvertido: string = tempoDuracao.split('-').reverse().join('-');
   
@@ -49,13 +50,39 @@ export default function CodeCreated() {
   };
 
   const footer = `
-  Os termos legais quanto ao uso desse cupom, estão disponiveis no nosso site, lembramos que há qualquer obrigação juridica da Construcasa vinculada a esse cupom, cupom não configura título de crédito ou promessa de compra e venda, mas sim uma bonificação.
+  O presente cupom é válido exclusivamente para utilização em nossas lojas físicas, não podendo, de forma alguma, ser utilizado como documento fiscal ou embasar qualquer argumento jurídico. Quaisquer dúvidas relacionadas ao uso deste cupom devem ser direcionadas à entidade emissora do mesmo.
+
+  Os termos legais referentes ao uso deste cupom estão disponíveis em nosso site oficial. Ressaltamos que a nossa empresa não assume qualquer obrigação jurídica vinculada a este cupom, o qual não configura um título de crédito ou uma promessa de compra e venda, mas sim uma bonificação oferecida por nossa empresa.
   `;
 
   const generatePdf = () => {
     const pdf = new jsPDF();
+    pdf.getFontList()
+    
+    // Definindo cor de fundo azul
+    pdf.setFillColor(51, 102, 204); // Azul
+    pdf.rect(0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'F');
+
+    // Definindo caixa branca com bordas arredondadas
+    pdf.setFillColor(255, 255, 255); // Branco
+    pdf.roundedRect(10, 10, pdf.internal.pageSize.getWidth() - 20, pdf.internal.pageSize.getHeight() - 20, 5, 5, 'F');
+
+    // Título "Promo"
+    pdf.setFont('Open-sans')
     pdf.setFontSize(24);
-    pdf.text('CUPOM', 105, 20, { align: 'center' });
+    pdf.setTextColor(0); // Cor do texto preto
+    pdf.text('Promo', 85, 22, { align: 'center' });
+
+    // Título "Code"
+    pdf.setFontSize(24);
+    pdf.setTextColor(0); // Cor do texto preto
+    pdf.text('Code', 104, 29, { align: 'center' });
+
+    pdf.setFont('Arial')
+
+    // Faixa horizontal no código
+    pdf.setDrawColor(0); // Cor da linha preta
+    pdf.line(20, 30, pdf.internal.pageSize.getWidth() - 20, 30);
 
     // Adicionando QR Code
     const qrImage = new Image();
@@ -66,45 +93,50 @@ export default function CodeCreated() {
   
     pdf.addImage(qrImage, 'PNG', qrX, 30, qrWidth, 100);
   
-
     // Adicionando Código
     pdf.setFontSize(12);
-    pdf.text(codigo, 105, 150, { align: 'center' });
+    pdf.text(codigo, 105, 140, { align: 'center' });
 
+    // Faixa horizontal no código
+    pdf.setDrawColor(0); // Cor da linha preta
+    pdf.line(20, 150, pdf.internal.pageSize.getWidth() - 20, 150);
+
+    // Seção "Dados do Cupom"
     pdf.setFontSize(14);
-    pdf.text('Dados do Cupom', 105, 170, { align: 'center' });
+    pdf.text('Dados do Cupom', 105, 160, { align: 'center' });
 
+    // Dados do Cupom
     pdf.setFontSize(11);
-    pdf.text(dadosCupom.nome, 20, 182);
+    pdf.text(dadosCupom.nome, 20, 172);
+    pdf.text(dadosCupom.cpf, 20, 182);
+    pdf.text(dadosCupom.valor, 20, 192);
+    pdf.text(dadosCupom.tempoDuracao, 20, 202);
 
-    pdf.setFontSize(11);
-    pdf.text(dadosCupom.cpf, 20, 192);
+    // Faixa horizontal no código
+    pdf.setDrawColor(0); // Cor da linha preta
+    pdf.line(20, 208, pdf.internal.pageSize.getWidth() - 20, 208);
 
-    pdf.setFontSize(11);
-    pdf.text(dadosCupom.valor, 20, 202);
-
-    pdf.setFontSize(11);
-    pdf.text(dadosCupom.tempoDuracao, 20, 212);
-
+    // Termos e condições do Cupom
     pdf.setFontSize(14);
-    pdf.text('Termos e condições do Cupom', 105, 245, { align: 'center' });
+    pdf.text('Termos e condições do Cupom', 105, 220, { align: 'center' });
 
     // Adicionando Rodapé
     pdf.setFontSize(11);
     const footerLines = footer.split('\n');
-    let yPosition = 255;
+    let yPosition = 230;
     const lineHeight = 5;
 
     footerLines.forEach((line) => {
       const lineSplit = pdf.splitTextToSize(line, 180);
       lineSplit.forEach((split: string | string[]) => {
-        pdf.text(split, 20, yPosition);
+        pdf.text(split, 15, yPosition);
         yPosition += lineHeight;
       });
     });
 
     pdf.save('cupom.pdf');
-  };
+};
+
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -41,10 +41,11 @@ export default function CadastroCupom() {
     nome: '',
     cpf: '',
     valor: '',
-    formaPagamento: '',
+    formaPagamento: 'reais',
     tempoDuracao: '',
   });
   const [openError, setOpenError] = useState(false);
+  const [cupomEspecial, setCupomEspecial] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (event: any) => {
@@ -53,14 +54,30 @@ export default function CadastroCupom() {
     // Formatação do CPF
     if (name === 'cpf') {
       const formattedValue = value
-        .replace(/\D/g, '') // Remove caracteres não numéricos
-        .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona o ponto após os primeiros 3 dígitos
-        .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona o segundo ponto após os próximos 3 dígitos
-        .replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona o hífen e os dois últimos dígitos
+        .replace(/\D/g, '') 
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2') 
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2'); 
       setFormData({
         ...formData,
         [name]: formattedValue,
       });
+    } else if (name === 'formaPagamento') {
+      if (value === 'cupomEspecial') {
+        setCupomEspecial(true);
+        setFormData({
+          ...formData,
+          [name]: value,
+          valor: '', 
+        });
+      } else {
+        setCupomEspecial(false);
+        setFormData({
+          ...formData,
+          [name]: value,
+          valor: value === 'porcentagem' ? '' : '', 
+        });
+      }
     } else {
       setFormData({
         ...formData,
@@ -91,6 +108,16 @@ export default function CadastroCupom() {
     } catch (error) {
       console.error('Erro ao cadastrar:', error);
       setOpenError(true);
+    }
+  };
+
+  const handleValueChange = (event: any) => {
+    const value = event.target.value;
+    if (/^\d*\.?\d*$/.test(value) || value === '') {
+      setFormData({
+        ...formData,
+        valor: value,
+      });
     }
   };
 
@@ -132,14 +159,25 @@ export default function CadastroCupom() {
               placeholder="000.000.000-00"
               inputProps={{ maxLength: 14 }}
             />
-            <TextField
-              label="Valor *"
-              variant="outlined"
-              name="valor"
-              value={formData.valor}
-              onChange={handleChange}
-              placeholder="99,12"
-            />
+            {cupomEspecial ? (
+              <TextField
+                label="Cupom Especial *"
+                variant="outlined"
+                name="valor"
+                value={formData.valor}
+                onChange={handleChange}
+                placeholder="Descreva o cupom especial"
+              />
+            ) : (
+              <TextField
+                label="Valor *"
+                variant="outlined"
+                name="valor"
+                value={formData.valor}
+                onChange={handleValueChange}
+                placeholder={formData.formaPagamento === 'porcentagem' ? '15%' : '44,99'}
+              />
+            )}
             <RadioGroup
               aria-label="forma-pagamento"
               defaultValue="reais"
@@ -150,6 +188,7 @@ export default function CadastroCupom() {
               <Stack direction="row">
                 <FormControlLabel value="reais" control={<Radio />} label="Reais" />
                 <FormControlLabel value="porcentagem" control={<Radio />} label="%" />
+                <FormControlLabel value="cupomEspecial" control={<Radio />} label="Cupom Especial" onChange={() => setCupomEspecial(!cupomEspecial)} />
               </Stack>
             </RadioGroup>
             <InputContainer>

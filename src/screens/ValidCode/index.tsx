@@ -65,7 +65,7 @@ export default function ValidCode() {
         <Paper
           sx={{
             padding: 5,
-            maxWidth: '90%', // Definindo a largura máxima como 90% da largura do container pai
+            maxWidth: '90%',
             minHeight: '4rem',
             display: 'flex',
             flexDirection: 'column',
@@ -110,6 +110,7 @@ export default function ValidCode() {
             <Stack direction="row">
               <FormControlLabel value="reais" control={<Radio />} label="Reais" />
               <FormControlLabel value="porcentagem" control={<Radio />} label="%" />
+              <FormControlLabel value="cupomEspecial" control={<Radio />} label="Cupom Especial" />
             </Stack>
           </RadioGroup>
             <InputContainer>

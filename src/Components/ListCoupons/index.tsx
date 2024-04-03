@@ -61,7 +61,7 @@ export default function ListCoupons() {
             </ListItemAvatar>
             <ListItemText primary={coupon.nome} secondary={coupon.cpf} />
             <Typography variant="body2" align="right">
-              {coupon.formaPagamento === 'reais' ? `R$ ${coupon.valor}` : `${coupon.valor}%`}
+              {coupon.formaPagamento === 'reais' ? `R$ ${coupon.valor}` : coupon.formaPagamento === '%' ? `${coupon.valor} %` : coupon.valor}
             </Typography>
           </ListItem>
         ))}
