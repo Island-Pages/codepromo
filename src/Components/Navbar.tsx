@@ -19,11 +19,11 @@ export default function NavBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#003049' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Link to="/home">
             <Avatar style={{ width: '5rem', height: '5rem' }}> 
-              <img src={logo} alt="Lock" style={{ width: '100%', height: '100%', backgroundColor: '#1976D2' }} />
+              <img src={logo} alt="Lock" style={{ width: '100%', height: '100%', backgroundColor: '#003049' }} />
             </Avatar>
           </Link>
           <Button color="inherit" component={Link} to="/" onClick={handleLogout}>

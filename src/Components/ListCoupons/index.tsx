@@ -51,12 +51,12 @@ export default function ListCoupons() {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      <List sx={{ width: '100%', bgcolor: 'background.paper', maxHeight: 300, overflow: 'auto', visibility: loading ? 'hidden' : 'visible' }}>
+      <List sx={{ width: '100%', bgcolor: 'background.paper', maxHeight: 300, overflow: 'auto', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', visibility: loading ? 'hidden' : 'visible' }}>
         {coupons.map(coupon => (
           <ListItem key={coupon._id}>
             <ListItemAvatar>
               <Avatar>
-                <DoneTwoToneIcon />
+                <DoneTwoToneIcon style={{ color: 'white', backgroundColor: '#32CD32', width: '100%', height: '100%', padding: 3, margin: 3 }}/>
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={coupon.nome} secondary={coupon.cpf} />

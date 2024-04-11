@@ -8,8 +8,8 @@ const CenteredCameraIcon = styled(CameraAltIcon)`
     margin: auto;
     font-size: 3rem;
     color: white; 
-    background-color: blue;
-    border: 2px solid blue; 
+    background-color: #FBFBFF;
+    border: 2px solid #003049; 
     border-radius: 50%; 
     padding: 10px; 
     cursor: pointer;
@@ -51,7 +51,7 @@ function Scanner({ onScan }: { onScan: any }) {
         <div style={{ textAlign: 'center' }}>
     {showScanner
         ? null
-        : <CenteredCameraIcon onClick={startScanner} />
+        : <CenteredCameraIcon onClick={startScanner} style={{ color: '#003049' }} />
     }
     <div id='reader'></div>
 </div>

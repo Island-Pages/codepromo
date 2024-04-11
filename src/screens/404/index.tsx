@@ -96,7 +96,7 @@ const NotFound: React.FC = () => {
     <Container>
       <Title>404</Title>
       <Text>Oops! Aba não encontrada.</Text>
-      <Button href="/"><i className="icon-home"></i> Volte para a home, é melhor.</Button>
+      <Button href="/"><i className="icon-home"></i> Voltar para a home.</Button>
     </Container>
   );
 }

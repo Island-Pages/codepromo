@@ -40,7 +40,7 @@ export default function SignIn() {
     <ThemeProvider theme={defaultTheme}>
       <Box
         sx={{
-          background: 'linear-gradient(to right, #2196f3, #0d47a1)',
+          background: 'linear-gradient(to right, #003049 , #0d47a1)',
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',

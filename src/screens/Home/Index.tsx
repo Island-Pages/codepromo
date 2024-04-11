@@ -18,7 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function HomePage() {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', backgroundColor: '#FBFBFF' }}>
       <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
         <Grid container justifyContent="space-between">
           <Grid item>
@@ -30,7 +30,7 @@ export default function HomePage() {
         </Grid>
         <Grid container justifyContent="center">
           <Grid item xs={12} sx={{ paddingBottom: 2 }}>
-            <Item>Últimos cupons:</Item>
+          <Item sx={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '1rem', backgroundColor:'#003049', color:'white ' }}>Últimos cupons:</Item>
           </Grid>
           <Grid item xs={12} >
             <ListCoupons />

@@ -122,7 +122,7 @@ export default function CadastroCupom() {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh'}}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', backgroundColor: '#FBFBFF' }}>
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
         <Paper
           sx={{

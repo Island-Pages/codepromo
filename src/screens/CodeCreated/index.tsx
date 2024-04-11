@@ -94,7 +94,7 @@ export default function CodeCreated() {
     pdf.addImage(qrImage, 'PNG', qrX, 30, qrWidth, 100);
   
     // Adicionando Código
-    pdf.setFontSize(12);
+    pdf.setFontSize(18);
     pdf.text(codigo, 105, 140, { align: 'center' });
 
     // Faixa horizontal no código
@@ -139,7 +139,7 @@ export default function CodeCreated() {
 
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', backgroundColor: '#FBFBFF' }}>
       <Stack spacing={{ xs: 1, sm: 2 }} direction="column" alignItems="center">
         <Paper
           sx={{
