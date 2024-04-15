@@ -22,10 +22,10 @@ export default function HomePage() {
       <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
         <Grid container justifyContent="space-between">
           <Grid item>
-            <Button variant="contained" component={Link} to="/createCode">Cadastrar um novo cupom</Button>
+            <Button variant="contained" component={Link} to="/createCode" sx={{ bgcolor: '#003049', color: 'white', '&:hover': { bgcolor: '#FBFBFF', color: 'black' } }}>Cadastrar um novo cupom</Button>  
           </Grid>
           <Grid item>
-            <Button variant="contained" component={Link} to="/validationCode">Validar um cupom</Button>
+            <Button variant="contained" component={Link} to="/validationCode" sx={{ bgcolor: '#FFCB47', color: 'black',  '&:hover': { bgcolor: '#FBFBFF', color: 'black' } }}>Validar um cupom</Button>
           </Grid>
         </Grid>
         <Grid container justifyContent="center">

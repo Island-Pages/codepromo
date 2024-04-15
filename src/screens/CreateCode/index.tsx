@@ -205,7 +205,7 @@ export default function CadastroCupom() {
               />
             </InputContainer>
           </InputContainer>
-          <CenteredButton variant="contained" color="primary" onClick={handleSubmit}>
+          <CenteredButton variant="contained" color="primary" onClick={handleSubmit} sx={{ bgcolor: '#FFCB47', color: 'black',  '&:hover': { bgcolor: '#003049', color: 'white' } }}>
             Cadastrar
           </CenteredButton>
         </Paper>

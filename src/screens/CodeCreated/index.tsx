@@ -164,11 +164,11 @@ export default function CodeCreated() {
             <div>{codigo}</div>
           </CodeContainer>
           <Stack spacing={4}  style={{marginTop:'2rem'}}direction="row" justifyContent="center">
-            <Button variant="contained" color="primary" onClick={generatePdf}>
+            <Button variant="contained" color="primary" onClick={generatePdf} sx={{ bgcolor: '#FFCB47', color: 'black',  '&:hover': { bgcolor: '#003049', color: 'white' } }}>
               Compartilhar
             </Button>
-            <Button variant="contained" color="primary" component={NavLink} to="/home">
-              Voltar
+            <Button variant="contained" color="primary" component={NavLink} to="/home"  sx={{ bgcolor: '#003049', color: 'white', '&:hover': { bgcolor: '#FBFBFF', color: 'black' } }}>
+              Sair
             </Button>
           </Stack>
         </Paper>

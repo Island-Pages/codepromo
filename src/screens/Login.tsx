@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import logo from '../assets/logo.jpeg'
+import logo from '../assets/logo.png'
 
 const defaultTheme = createTheme();
 
@@ -66,7 +66,7 @@ export default function SignIn() {
             }}
           >
             <Avatar sx={{ m: 1, height: '35%', width: '35%'}}>
-              <img src={logo} alt="Lock" style={{ width: '100%', height: 'auto' }} />
+              <img src={logo} alt="Lock" style={{ width: '100%', height: '100%' }} />
             </Avatar>
             <Box sx={{ mt: 1, width: '100%' }}>
               <TextField
@@ -110,7 +110,7 @@ export default function SignIn() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, bgcolor: '#003049', color: 'white', '&:hover': { bgcolor: '#FBFBFF', color: 'black' }}}
                 onClick={handleSubmit}
               >
                 {loading ? <CircularProgress color="inherit" size={24} /> : 'Login'}

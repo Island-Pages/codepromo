@@ -1,7 +1,7 @@
 import { AppBar, Box, Toolbar, Button, Avatar } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { logout } from '../services/AuthService';
-import logo from '../assets/logo_semfundo.png'; // Imagem com fundo
+import logo from '../assets/logo_texto_branco_01.png'; // Imagem com fundo
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 export default function NavBar() {
