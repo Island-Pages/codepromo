@@ -71,12 +71,12 @@ export default function CodeCreated() {
     pdf.setFont('Open-sans')
     pdf.setFontSize(24);
     pdf.setTextColor(0); // Cor do texto preto
-    pdf.text('Promo', 85, 22, { align: 'center' });
+    pdf.text('Cellu', 85, 22, { align: 'center' });
 
     // Título "Code"
     pdf.setFontSize(24);
     pdf.setTextColor(0); // Cor do texto preto
-    pdf.text('Code', 104, 29, { align: 'center' });
+    pdf.text('Promo', 104, 29, { align: 'center' });
 
     pdf.setFont('Arial')
 
