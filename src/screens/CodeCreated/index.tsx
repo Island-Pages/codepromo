@@ -167,7 +167,7 @@ export default function CodeCreated() {
     const lines1 = pdf.splitTextToSize(footer1, pdf.internal.pageSize.getWidth() - 20);
 
     // Desenhando cada linha do footer1
-    lines1.forEach((line) => {
+    lines1.forEach((line: any) => {
       pdf.text(line, footerX1, footerY1, { align: 'center' });
       footerY1 += 4; // Avançando para a próxima linha
     });
@@ -182,7 +182,7 @@ export default function CodeCreated() {
     const lines2 = pdf.splitTextToSize(footer2, pdf.internal.pageSize.getWidth() - 20);
 
     // Desenhando cada linha do footer2
-    lines2.forEach((line) => {
+    lines2.forEach((line: any) => {
       pdf.text(line, footerX2, footerY2, { align: 'center' });
       footerY2 += 4; // Avançando para a próxima linha
     });
